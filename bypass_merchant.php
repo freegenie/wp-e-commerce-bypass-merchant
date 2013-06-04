@@ -16,7 +16,7 @@ class WP_BypassMerchant {
   }
 
   function init() {
-		add_action( 'wpsc_submit_checkout_gateway', array( $this, 'override_gateway_selected_payment'), 10, 2);
+    add_action( 'wpsc_submit_checkout_gateway', array( $this, 'override_gateway_selected_payment'), 10, 2);
   }
 
   function override_gateway_selected_payment($submitted_gateway, $purchase_log) {
