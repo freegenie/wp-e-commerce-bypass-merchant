@@ -22,13 +22,19 @@ class WP_BypassMerchant {
   function override_gateway_selected_payment($submitted_gateway, $purchase_log) {
     if ((int) $purchase_log->get('totalprice') == 0) {
       $this->override_purchase_log($purchase_log); 
-      $this->update_cache(); 
+      $this->send_emails($purchase_log);
+      $this->update_customer_meta(); 
       $this->redirect_to_transaction_page($purchase_log->get('sessionid'));
     }
   }
 
-  private function update_cache() {
+  private function update_customer_meta() {
     wpsc_update_customer_meta('selected_gateway', self::NO_GATEWAY); 
+  }
+
+  private function send_emails($purchase_log) {
+    wpsc_send_customer_email($purchase_log); 
+    wpsc_send_admin_email($purchase_log);
   }
 
   private function override_purchase_log($purchase_log) {
